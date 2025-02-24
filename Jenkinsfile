@@ -1,13 +1,42 @@
 pipeline {
     agent any
-    options {
-        buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
-        disableConcurrentBuilds()
+    tools {
+        maven 'M2_HOME'
     }
+
     stages {
-        stage('Hello') {
+        stage('Hello Test') {
             steps {
-                echo "hello"
+                echo 'Chaima'
+            }
+        }
+
+        stage('Git Checkout') {
+            steps {
+                git branch: 'RegitrationEntity',
+                    url: 'https://github.com/chaimaguezmir/Devops-G6.git',
+                    credentialsId: 'jenkins-github-token'
+            }
+        }
+
+        stage('Clean compile') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+
+
+        stage(' test Projet') {
+            steps {
+                 sh 'mvn -Dtest=RegistrationServicesImplTest clean test '
+             }
+        }
+
+        stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
     }
