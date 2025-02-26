@@ -31,13 +31,5 @@ pipeline {
                  sh 'mvn -Dtest=PisteServicesImplTest clean test '
              }
         }
-
-        stage('SonarQube') {
-            steps {
-                withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
     }
 }
