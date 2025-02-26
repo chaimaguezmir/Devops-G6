@@ -15,7 +15,7 @@ pipeline {
             steps {
                 git branch: 'Instructor',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git',
-                    credentialsId: ''jenkins-github-token'
+                    credentialsId: 'jenkins-github-token'
             }
         }
 
