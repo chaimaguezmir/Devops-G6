@@ -10,10 +10,7 @@ import tn.esprit.spring.entities.Instructor;
 import tn.esprit.spring.repositories.ICourseRepository;
 import tn.esprit.spring.repositories.IInstructorRepository;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -95,5 +92,42 @@ class InstructorServicesImplTest {
         assertEquals(1, savedInstructor.getCourses().size());
         assertTrue(savedInstructor.getCourses().contains(course));
     }
+    @Test
+    void removeCourseFromInstructor() {
+        Instructor instructor = new Instructor();
+        instructor.setNumInstructor(1L);
+        Course course = new Course();
+        course.setNumCourse(1L);
+
+        instructor.setCourses(new HashSet<>(List.of(course)));
+
+        when(instructorRepository.findById(1L)).thenReturn(Optional.of(instructor));
+        when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
+        when(instructorRepository.save(any(Instructor.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Instructor updatedInstructor = instructorServices.removeCourseFromInstructor(1L, 1L);
+
+        assertNotNull(updatedInstructor);
+        assertEquals(0, updatedInstructor.getCourses().size());
+    }
+    @Test
+    void getCoursesByInstructor() {
+        Instructor instructor = new Instructor();
+        instructor.setNumInstructor(1L);
+        Course course1 = new Course();
+        course1.setNumCourse(1L);
+        Course course2 = new Course();
+        course2.setNumCourse(2L);
+
+        instructor.setCourses(new HashSet<>(List.of(course1, course2)));
+
+        when(instructorRepository.findById(1L)).thenReturn(Optional.of(instructor));
+
+        Set<Course> courses = instructorServices.getCoursesByInstructor(1L);
+
+        assertNotNull(courses);
+        assertEquals(2, courses.size());
+    }
+
 
 }
