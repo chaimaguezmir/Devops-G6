@@ -7,15 +7,15 @@ pipeline {
     stages {
         stage('Hello Test') {
             steps {
-                echo 'Chaima'
+                echo 'Anas'
             }
         }
 
         stage('Git Checkout') {
             steps {
-                git branch: 'RegitrationEntity',
+                git branch: 'Instructor',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git',
-                    credentialsId: 'jenkins-github-token'
+                    credentialsId: 'git-token'
             }
         }
 
@@ -28,7 +28,7 @@ pipeline {
 
         stage(' test Projet') {
             steps {
-                 sh 'mvn -Dtest=RegistrationServicesImplTest clean test '
+                 sh 'mvn -Dtest=InstructorServicesImplTest clean test '
              }
         }
 
