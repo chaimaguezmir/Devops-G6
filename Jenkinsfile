@@ -38,6 +38,13 @@ pipeline {
                     sh 'mvn sonar:sonar'
                 }
             }
+
+        stage('MVN DEPLOY') {
+              steps {
+            sh 'mvn clean deploy -DskipTests'
+    }
+}
+
         }
     }
 }
