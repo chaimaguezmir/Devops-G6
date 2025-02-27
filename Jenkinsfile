@@ -45,10 +45,16 @@ pipeline {
                                 sh 'mvn sonar:sonar -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN}'
                             }
                         }
-            stage('MVN DEPLOY') {
-              steps {
-            sh 'mvn clean deploy -DskipTests'
-    }
-}
+    stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'mvn deploy'
+            }
+        }
     }
 }
