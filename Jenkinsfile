@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     tools {
@@ -25,24 +26,20 @@ pipeline {
             }
         }
 
-
-        stage(' test Projet') {
+        stage('Test Projet') {
             steps {
-                 sh 'mvn -Dtest=RegistrationServicesImplTest clean test '
-             }
+                sh 'mvn -Dtest=RegistrationServicesImplTest clean test'
+            }
         }
 
-     stage('SonarQube') {
-    steps {
-        withSonarQubeEnv('sq1') {
-            sh 'mvn sonar:sonar -Dsonar.login=squ_d510fa4e9c81d7f17f230991a7f5dcf19087afd1'
-        }
-    }
-}
-
-
-    
-
+        stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('sq1') {
+                    withCredentials([string(credentialsId: 'sonar-token-id', variable: 'SONAR_TOKEN')]) {
+                        sh 'mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN'
+                    }
+                }
+            }
         }
     }
 }
