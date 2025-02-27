@@ -39,11 +39,7 @@ pipeline {
                 }
             }
 
-        stage('MVN DEPLOY') {
-              steps {
-            sh 'mvn clean deploy -DskipTests'
-    }
-}
+    
 
         }
     }
