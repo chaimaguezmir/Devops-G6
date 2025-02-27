@@ -37,7 +37,7 @@ pipeline {
                 }
          stage(' test Projet') {
             steps {
-                 sh 'mvn -Dtest=RegistrationServicesImplTest clean test '
+                 sh 'mvn -Dtest=CourseServicesImplTest clean test '
              }
         }
          stage('MVN SONARQUBE') {
