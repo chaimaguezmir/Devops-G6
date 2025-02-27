@@ -35,6 +35,11 @@ pipeline {
                         sh 'mvn compile'
                     }
                 }
+         stage(' test Projet') {
+            steps {
+                 sh 'mvn -Dtest=RegistrationServicesImplTest clean test '
+             }
+        }
          stage('MVN SONARQUBE') {
                             steps {
                                 sh 'mvn sonar:sonar -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN}'
