@@ -32,12 +32,14 @@ pipeline {
              }
         }
 
-        stage('SonarQube') {
-            steps {
-                withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
+     stage('SonarQube') {
+    steps {
+        withSonarQubeEnv('sq1') {
+            sh 'mvn sonar:sonar -Dsonar.login=squ_d510fa4e9c81d7f17f230991a7f5dcf19087afd1'
+        }
+    }
+}
+
 
     
 
