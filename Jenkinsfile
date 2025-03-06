@@ -42,7 +42,7 @@ pipeline {
         stage('Nexus') {
             steps {
         withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'admin', passwordVariable: 'anas1920')]) {
-            sh 'mvn deploy -DaltDeploymentRepository=deploymentRepo::default::http://172.20.116.17:8081/repository/maven-releases/ -Dusername=$NEXUS_USER -Dpassword=$NEXUS_PASS'
+            sh 'mvn deploy -DaltDeploymentRepository=deploymentRepo::default::http://172.20.116.17:8081/repository/maven-releases/ -Dusername=$admin -Dpassword=$anas1920'
         }
     }
 }
