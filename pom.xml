@@ -107,7 +107,7 @@
 	<distributionManagement>
 		<repository>
 			<id>deploymentRepo</id>
-			<name>Nexus Repository</name>
+			<name>NexusRepository</name>
 			<url>http://172.20.116.17:8081/repository/devopsRepo/</url>
 		</repository>
 	</distributionManagement>
