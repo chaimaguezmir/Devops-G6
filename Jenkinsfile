@@ -32,13 +32,13 @@ pipeline {
              }
         }
 
-        // stage('SonarQube') {
-        //     steps {
-        //         withSonarQubeEnv('sq1') {
-        //             sh 'mvn sonar:sonar'
-        //         }
-        //     }
-        // }
+        stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('sq1') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
                 stage(' Deploy') {
             steps {
                  sh 'mvn deploy -Dmaven.test.skip=true '
