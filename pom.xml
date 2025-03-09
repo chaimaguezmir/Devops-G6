@@ -20,13 +20,6 @@
 		<java.version>11</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
-	<distributionManagement>
-		<repository>
-			<id>DeploymentRepo</id>
-			<name>NexusRepository</name>
-			<url>http://172.20.116.17:8081/repository/devops/</url>
-		</repository>
-	</distributionManagement>
 	<dependencies>
 		<!-- Spring Boot Dependencies -->
 		<dependency>
@@ -110,5 +103,12 @@
 			</plugin>
 		</plugins>
 	</build>
+		<distributionManagement>
+		<repository>
+			<id>DeploymentRepo</id>
+			<name>NexusRepository</name>
+			<url>http://172.20.116.17:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
