@@ -32,12 +32,7 @@ pipeline {
              }
         }
 
-         stage('Deploy to Nexus') {
-            steps {
-                // Déployer le package dans Nexus
-                sh 'mvn deploy -Dmaven.test.skip=true'
-            }
-        }
+       
          stage('Deploy') {
             steps {
                 sh 'mvn deploy -Dmaven.test.skip=true'
