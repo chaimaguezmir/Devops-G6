@@ -32,11 +32,10 @@ pipeline {
              }
         }
 
-        stage('SonarQube') {
+         stage('Deploy to Nexus') {
             steps {
-                withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar'
-                }
+                // Déployer le package dans Nexus
+                sh 'mvn deploy -Dmaven.test.skip=true'
             }
         }
          stage('Deploy') {
