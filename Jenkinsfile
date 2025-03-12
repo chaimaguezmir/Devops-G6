@@ -5,6 +5,12 @@ pipeline {
     }
 
     stages {
+        stage('Hello Test') {
+            steps {
+                echo 'Anas'
+            }
+        }
+
         stage('Git Checkout') {
             steps {
                 git branch: 'Instructor',
@@ -19,24 +25,20 @@ pipeline {
             }
         }
 
-        stage('Test Projet') {
+
+        stage(' test Projet') {
             steps {
-                sh 'mvn -Dtest=InstructorServicesImplTest clean test'
-            }
+                 sh 'mvn -Dtest=InstructorServicesImplTest clean test '
+             }
         }
 
-        stage('Deploy') {
+  
+                stage(' Deploy') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'deploymentRepo', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh '''
-                        mvn -X clean deploy -Dmaven.test.skip=true \
-                        -DrepositoryId=deploymentRepo \
-                        -DaltDeploymentRepository=deploymentRepo::default::http://172.20.116.17:8081/repository/jenkins-releases/ \
-                        -Dserver.username=$USERNAME \
-                        -Dserver.password=$PASSWORD
-                    '''
-                }
-            }
+                 sh 'mvn clean deploy -Dmaven.test.skip=true'
+             }
         }
+        
+
     }
 }
