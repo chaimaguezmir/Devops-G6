@@ -73,11 +73,10 @@
 	</build>
 	<!-- Ajout du dépôt Nexus -->
 	<distributionManagement>
-		<repository>
-			<id>deploymentRepo</id>
-			<name>Nexus Repository</name>
-			<url>http://172.20.116.17:8081/repository/maven-releases/</url>
-		</repository>
+	    <repository>
+	        <id>deploymentRepo</id>  <!-- Doit correspondre exactement à settings.xml -->
+	        <url>http://172.20.116.17:8081/repository/maven-releases/</url>
+	    </repository>
 	</distributionManagement>
 
 </project>
