@@ -5,12 +5,6 @@ pipeline {
     }
 
     stages {
-        stage('Hello Test') {
-            steps {
-                echo 'Anas'
-            }
-        }
-
         stage('Git Checkout') {
             steps {
                 git branch: 'Instructor',
@@ -25,20 +19,44 @@ pipeline {
             }
         }
 
-
-        stage(' test Projet') {
+        stage('Test Projet') {
             steps {
-                 sh 'mvn -Dtest=InstructorServicesImplTest clean test '
-             }
+                sh 'mvn -Dtest=InstructorServicesImplTest clean test'
+            }
         }
 
-  
-                stage(' Deploy') {
+        stage('Build JAR') {
             steps {
-                 sh 'mvn clean deploy -Dmaven.test.skip=true'
-             }
+                sh 'mvn package -Dmaven.test.skip=true'
+            }
         }
-        
 
+        stage('Deploy to Nexus') {
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '172.20.116.17:8081',  // Remplacez par l'URL de votre Nexus
+                    groupId: 'tn.esprit.spring',
+                    version: '1.0',  // Remplacez par la version de votre projet
+                    repository: 'jenkins-releases',  // Remplacez par le nom de votre dépôt
+                    credentialsId: 'deploymentRepo',  // Utilisez l'ID des informations d'identification configurées dans Jenkins
+                    artifacts: [
+                        [
+                            artifactId: 'gestion-station-ski',
+                            classifier: '',
+                            file: 'target/gestion-station-ski-1.0.jar',  // Chemin vers le fichier JAR généré
+                            type: 'jar'
+                        ],
+                        [
+                            artifactId: 'gestion-station-ski',
+                            classifier: '',
+                            file: 'pom.xml',  // Déployez également le fichier POM
+                            type: 'pom'
+                        ]
+                    ]
+                )
+            }
+        }
     }
 }
