@@ -27,7 +27,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'deploymentRepo', usernameVariable: 'admin', passwordVariable: 'admin123')]) {
+                withCredentials([usernamePassword(credentialsId: 'deploymentRepo', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         mvn -X clean deploy -Dmaven.test.skip=true \
                         -DrepositoryId=deploymentRepo \
