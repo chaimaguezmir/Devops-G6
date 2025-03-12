@@ -36,11 +36,7 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest clean test'
             }
         }
-        stage('MVN SONARQUBE') {
-            steps {
-                sh 'mvn sonar:sonar -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN}'
-            }
-        }
+        
         stage('Deploy to Nexus') {
             steps {
                 // Déployer le package dans Nexus
