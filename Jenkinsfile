@@ -30,6 +30,14 @@ pipeline {
                 sh 'mvn package -Dmaven.test.skip=true'
             }
         }
+        
+        stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('sq1') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
 
         stage('Deploy to Nexus') {
             steps {
@@ -39,7 +47,7 @@ pipeline {
                     nexusUrl: '172.20.116.17:8081',  
                     groupId: 'tn.esprit.spring',
                     version: '1.0',  
-                    repository: 'jenkins-releases',  
+                    repository: 'maven-releases',  
                     credentialsId: 'deploymentRepo',  
                     artifacts: [
                         [
