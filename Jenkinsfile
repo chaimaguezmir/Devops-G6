@@ -25,16 +25,20 @@ pipeline {
             }
         }
 
-        stage('Test Projet') {
+
+        stage(' test Projet') {
             steps {
                  sh 'mvn -Dtest=InstructorServicesImplTest clean test '
              }
         }
 
-        stage('Deploy') {
+  
+                stage(' Deploy') {
             steps {
-                sh 'mvn deploy -Dmaven.test.skip=true -X'
-            }
-    }
+                 sh 'mvn deploy -Dmaven.test.skip=true '
+             }
+        }
+        
+
     }
 }
