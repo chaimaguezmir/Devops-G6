@@ -113,7 +113,7 @@
 		<repository>
 			<id>deploymentRepo</id>
 			<name>NexusRepository</name>
-			<url>http://172.20.116.17:8081/repository/jenkins-releases/</url>
+			<url>http://172.20.116.17:8081/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
 </project>
