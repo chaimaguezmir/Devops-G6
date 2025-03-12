@@ -33,11 +33,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-credential', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-                sh 'mvn deploy -Dmaven.test.skip=true -DrepositoryId=deploymentRepo'
-
-                }
+                sh 'mvn deploy -Dmaven.test.skip=true'
             }
-        }
     }
 }
