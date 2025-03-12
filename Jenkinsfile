@@ -29,7 +29,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'deploymentRepo', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
-                        mvn clean deploy -Dmaven.test.skip=true \
+                        mvn -X clean deploy -Dmaven.test.skip=true \
                         -DrepositoryId=deploymentRepo \
                         -DaltDeploymentRepository=deploymentRepo::default::http://172.20.116.17:8081/repository/maven-releases/ \
                         -Dserver.username=$USERNAME \
