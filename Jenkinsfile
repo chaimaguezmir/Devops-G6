@@ -43,10 +43,6 @@ pipeline {
                 sh 'mvn deploy -Dmaven.test.skip=true'
             }
         }
-        stage('Deploy') {
-            steps {
-                sh 'mvn deploy'
-            }
-        }
+       
     }
 }
