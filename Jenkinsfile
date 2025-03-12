@@ -7,13 +7,13 @@ pipeline {
     stages {
         stage('Hello Test') {
             steps {
-                echo 'Anas'
+                echo 'Mahdi'
             }
         }
 
         stage('Git Checkout') {
             steps {
-                git branch: 'Instructor',
+                git branch: 'Skier',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git',
                     credentialsId: 'git-token'
             }
@@ -32,25 +32,8 @@ pipeline {
              }
         }
 
-        stage('SonarQube') {
-            steps {
-                withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
-                stage(' Deploy') {
-            steps {
-                 sh 'mvn deploy -Dmaven.test.skip=true '
-             }
-        }
+
         
-//         stage('Nexus') {
-//             steps {
-//         withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'admin', passwordVariable: 'anas1920')]) {
-//             sh 'mvn deploy -DaltDeploymentRepository=deploymentRepo::default::http://172.20.116.17:8081/repository/maven-releases/ -Dusername=$admin -Dpassword=$anas1920'
-//         }
-//     }
-// }
+
     }
 }
