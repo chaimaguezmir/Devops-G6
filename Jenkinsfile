@@ -36,4 +36,5 @@ pipeline {
                 sh 'mvn deploy -Dmaven.test.skip=true'
             }
     }
+    }
 }
