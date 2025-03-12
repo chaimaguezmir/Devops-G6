@@ -5,12 +5,6 @@ pipeline {
     }
 
     stages {
-        stage('Hello Test') {
-            steps {
-                echo 'Anas'
-            }
-        }
-
         stage('Git Checkout') {
             steps {
                 git branch: 'Instructor',
@@ -25,20 +19,18 @@ pipeline {
             }
         }
 
-
-        stage(' test Projet') {
+        stage('Test Projet') {
             steps {
-                 sh 'mvn -Dtest=InstructorServicesImplTest clean test '
-             }
+                sh 'mvn -Dtest=InstructorServicesImplTest clean test'
+            }
         }
 
-  
-                stage(' Deploy') {
+        stage('Deploy') {
             steps {
-                 sh 'mvn clean deploy -Dmaven.test.skip=true'
-             }
+                withCredentials([usernamePassword(credentialsId: 'deploymentRepo', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'mvn clean deploy -Dmaven.test.skip=true -DrepositoryId=deploymentRepo -DaltDeploymentRepository=deploymentRepo::default::http://172.20.116.17:8081/repository/maven-releases/'
+                }
+            }
         }
-        
-
     }
 }
