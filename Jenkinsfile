@@ -36,22 +36,22 @@ pipeline {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: '172.20.116.17:8081',  // Remplacez par l'URL de votre Nexus
+                    nexusUrl: '172.20.116.17:8081',  
                     groupId: 'tn.esprit.spring',
-                    version: '1.0',  // Remplacez par la version de votre projet
-                    repository: 'jenkins-releases',  // Remplacez par le nom de votre dépôt
-                    credentialsId: 'deploymentRepo',  // Utilisez l'ID des informations d'identification configurées dans Jenkins
+                    version: '1.0',  
+                    repository: 'jenkins-releases',  
+                    credentialsId: 'deploymentRepo',  
                     artifacts: [
                         [
                             artifactId: 'gestion-station-ski',
                             classifier: '',
-                            file: 'target/gestion-station-ski-1.0.jar',  // Chemin vers le fichier JAR généré
+                            file: 'target/gestion-station-ski-1.0.jar',  
                             type: 'jar'
                         ],
                         [
                             artifactId: 'gestion-station-ski',
                             classifier: '',
-                            file: 'pom.xml',  // Déployez également le fichier POM
+                            file: 'pom.xml',  
                             type: 'pom'
                         ]
                     ]
