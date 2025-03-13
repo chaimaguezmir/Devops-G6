@@ -1,8 +1,11 @@
-
 pipeline {
     agent any
     tools {
         maven 'M2_HOME'
+    }
+
+    environment {
+        DOCKER_IMAGE = "chaimaguezmir/devops-g6:latest"
     }
 
     stages {
@@ -39,10 +42,43 @@ pipeline {
                 }
             }
         }
-         stage('Deploy') {
+
+        stage('Deploy') {
             steps {
                 sh 'mvn deploy -Dmaven.test.skip=true'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t $DOCKER_IMAGE .'
+                }
+            }
+        }
+
+        stage('Start Docker Compose') {
+            steps {
+                script {
+                    sh 'docker compose down || true' // Arrête l'ancienne version
+                    sh 'docker compose up -d'       // Démarre la nouvelle version
+                }
+            }
+        }
+
+        stage('Check Running Containers') {
+            steps {
+                script {
+                    sh 'docker ps'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline terminé.'
+        }
     }
 }
+
