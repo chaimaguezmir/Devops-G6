@@ -4,11 +4,15 @@ pipeline {
         maven 'M2_HOME'
     }
 
+    environment {
+        DOCKER_IMAGE = 'anasbettouzia/gestion-station-ski:1.0.0'
+    }
+
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'Instructor',
-                    url: 'https://github.com/chaimaguezmir/Devops-G6.git',
+                git branch: 'main',
+                    url: 'https://github.com/ton-repo/gestion-station-ski.git',
                     credentialsId: 'git-token'
             }
         }
@@ -21,7 +25,7 @@ pipeline {
 
         stage('Test Projet') {
             steps {
-                sh 'mvn -Dtest=InstructorServicesImplTest clean test'
+                sh 'mvn test'
             }
         }
 
@@ -39,51 +43,27 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nexus') {
-            steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: '172.20.116.17:8081',
-                    groupId: 'tn.esprit.spring',
-                    version: '1.0',
-                    repository: 'maven-releases',
-                    credentialsId: 'deploymentRepo',
-                    artifacts: [
-                        [
-                            artifactId: 'gestion-station-ski',
-                            classifier: '',
-                            file: 'target/gestion-station-ski-1.0.jar',
-                            type: 'jar'
-                        ],
-                        [
-                            artifactId: 'gestion-station-ski',
-                            classifier: '',
-                            file: 'pom.xml',
-                            type: 'pom'
-                        ]
-                    ]
-                )
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-               script {
-                            sh 'docker build -t $DOCKER_IMAGE .'
-                       }
-            }
-        }
-
-        stage('Start Docker Compose') {
+        stage('Build & Push Docker Image') {
             steps {
                 script {
-                            sh 'docker compose down || true'
-                            sh 'docker compose up -d'
-                        }
+                    sh 'docker build -t $DOCKER_IMAGE .'
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    sh 'docker push $DOCKER_IMAGE'
+                }
             }
         }
-        stage('Check Running Containers') {
+
+        stage('Deploy avec Docker Compose') {
+            steps {
+                script {
+                    sh 'docker pull $DOCKER_IMAGE'
+                    sh 'docker compose down || true'
+                    sh 'docker compose up -d'
+                }
+            }
+        }
+
+        stage('Vérification des conteneurs') {
             steps {
                 script {
                     sh 'docker ps'
@@ -91,10 +71,10 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             echo 'Pipeline terminé.'
         }
     }
-
 }
