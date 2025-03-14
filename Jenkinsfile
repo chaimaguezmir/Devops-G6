@@ -11,8 +11,8 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/ton-repo/gestion-station-ski.git',
+                git branch: 'Instructor',
+                    url: 'https://github.com/chaimaguezmir/Devops-G6.git',
                     credentialsId: 'git-token'
             }
         }
@@ -25,7 +25,7 @@ pipeline {
 
         stage('Test Projet') {
             steps {
-                sh 'mvn test'
+               sh 'mvn -Dtest=InstructorServicesImplTest clean test'
             }
         }
 
