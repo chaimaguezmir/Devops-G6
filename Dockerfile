@@ -1,14 +1,10 @@
-# Utiliser une image Java 17
-FROM openjdk:17-jdk-slim
 
-# Définir le répertoire de travail
-WORKDIR /app
+FROM openjdk:17-jdk-alpine
 
-# Copier l’application compilée
-COPY target/*.jar app.jar
+LABEL authors="Chaima Guezmir"
 
-# Exposer le port
 EXPOSE 8089
 
-# Lancer l’application
+ADD target/gestion-station-ski-1.0.jar app.jar
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
