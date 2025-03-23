@@ -5,7 +5,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = "chaimaguezmir/devops-g6:latest"
+        DOCKER_IMAGE = "chaimaguezmir/gestion-station-ski:1.0.0"
     }
 
     stages {
@@ -49,17 +49,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh 'docker build -t $DOCKER_IMAGE .'
-                }
-            }
-        }
+    
 
         stage('Start Docker Compose') {
             steps {
                 script {
+                      sh 'docker pull $DOCKER_IMAGE'
                     sh 'docker compose down || true' // Arrête l'ancienne version
                     sh 'docker compose up -d'       // Démarre la nouvelle version
                 }
