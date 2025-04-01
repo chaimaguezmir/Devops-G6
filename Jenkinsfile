@@ -13,7 +13,7 @@ pipeline {
 
         stage('Git Checkout') {
             steps {
-                git branch: 'Skier',
+                git branch: 'SkierEntity',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git',
                     credentialsId: 'git-token'
             }
