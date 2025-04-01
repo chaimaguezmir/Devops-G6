@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a9626476-aae6-4a7c-9932-5c277b2672cd" name="Changes" comment="pom">
+      <change beforePath="$PROJECT_DIR$/src/test/java/tn/esprit/spring/services/InstructorServicesImplTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="InstructorEntity" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2t7yLNdHoR9OMTeaeM5QSptzHNf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.RegistrationServicesImplTest.addRegistrationTest.executor": "Run",
+    "Maven.gestion-station-ski [-Dtest=RegistrationServicesImplTest...].executor": "Run",
+    "Maven.gestion-station-ski [clean,install].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "Spring Boot.GestionStationSkiApplication.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "Skier",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/MSII/Desktop/4twin5_Group2_gestion-station-skier",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="tn.esprit.spring.services" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install" />
+      <command value="mvn -Dtest=RegistrationServicesImplTest test" />
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.InstructorServicesImplTest">
+    <configuration name="InstructorServicesImplTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="gestion-station-ski" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tn.esprit.spring.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="tn.esprit.spring.services" />
+      <option name="MAIN_CLASS_NAME" value="tn.esprit.spring.services.InstructorServicesImplTest" />
+      <option name="METHOD_NAME" value="addInstructorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GestionStationSkiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="gestion-station-ski" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="tn.esprit.spring.GestionStationSkiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.InstructorServicesImplTest" />
+      <item itemvalue="Spring Boot.GestionStationSkiApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.InstructorServicesImplTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a9626476-aae6-4a7c-9932-5c277b2672cd" name="Changes" comment="" />
+      <created>1739717351037</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1739717351037</updated>
+      <workItem from="1739717352224" duration="595000" />
+      <workItem from="1739988624719" duration="5350000" />
+      <workItem from="1740435193608" duration="750000" />
+      <workItem from="1740560940492" duration="3664000" />
+      <workItem from="1740565403781" duration="1517000" />
+      <workItem from="1740571291019" duration="1065000" />
+      <workItem from="1740573514121" duration="6535000" />
+      <workItem from="1740581021450" duration="2710000" />
+      <workItem from="1740596213009" duration="2451000" />
+      <workItem from="1740651903015" duration="210000" />
+      <workItem from="1740989154413" duration="54000" />
+      <workItem from="1741203449542" duration="4138000" />
+      <workItem from="1741207692438" duration="469000" />
+      <workItem from="1741220674370" duration="2360000" />
+      <workItem from="1741248705893" duration="4819000" />
+      <workItem from="1741254522122" duration="1960000" />
+      <workItem from="1741259123045" duration="28000" />
+      <workItem from="1741484929565" duration="83000" />
+      <workItem from="1741485090162" duration="1405000" />
+      <workItem from="1741749067285" duration="14000" />
+      <workItem from="1741749590610" duration="6000" />
+      <workItem from="1743531312324" duration="626000" />
+    </task>
+    <task id="LOCAL-00001" summary="testinstructor">
+      <option name="closed" value="true" />
+      <created>1740577287206</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740577287207</updated>
+    </task>
+    <task id="LOCAL-00002" summary="testinstructor avec metiers avance">
+      <option name="closed" value="true" />
+      <created>1740580395662</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740580395662</updated>
+    </task>
+    <task id="LOCAL-00003" summary="testinstructor avec crud">
+      <option name="closed" value="true" />
+      <created>1740598628253</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1740598628253</updated>
+    </task>
+    <task id="LOCAL-00004" summary="testinstructor avec crud">
+      <option name="closed" value="true" />
+      <created>1740598947997</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740598947997</updated>
+    </task>
+    <task id="LOCAL-00005" summary="testinstructor avec crud">
+      <option name="closed" value="true" />
+      <created>1741252408546</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1741252408546</updated>
+    </task>
+    <task id="LOCAL-00006" summary="pom">
+      <option name="closed" value="true" />
+      <created>1741253836538</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1741253836538</updated>
+    </task>
+    <task id="LOCAL-00007" summary="pom">
+      <option name="closed" value="true" />
+      <created>1741253908724</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1741253908724</updated>
+    </task>
+    <task id="LOCAL-00008" summary="pom">
+      <option name="closed" value="true" />
+      <created>1741254567888</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1741254567888</updated>
+    </task>
+    <task id="LOCAL-00009" summary="pom">
+      <option name="closed" value="true" />
+      <created>1741254973411</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1741254973412</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="testinstructor" />
+    <MESSAGE value="testinstructor avec metiers avance" />
+    <MESSAGE value="testinstructor avec crud" />
+    <MESSAGE value="pom" />
+    <option name="LAST_COMMIT_MESSAGE" value="pom" />
+  </component>
+</project>
