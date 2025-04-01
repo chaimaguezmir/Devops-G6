@@ -31,6 +31,12 @@ pipeline {
                  sh 'mvn -Dtest=SkierServicesImplTest clean test '
              }
         }
+                stage('Build JAR') {
+            steps {
+                sh 'mvn package -Dmaven.test.skip=true'
+            }
+        }
+
 
 
         
