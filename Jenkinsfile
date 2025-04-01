@@ -28,7 +28,7 @@ pipeline {
 
         stage(' test Projet') {
             steps {
-                 sh 'mvn -Dtest=InstructorServicesImplTest clean test '
+                 sh 'mvn -Dtest=SkierServicesImplTest clean test '
              }
         }
 
