@@ -28,18 +28,46 @@ pipeline {
                sh 'mvn -Dtest=InstructorServicesImplTest clean test'
             }
         }
+        
+        stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('sq1') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
 
         stage('Build JAR') {
             steps {
                 sh 'mvn package -Dmaven.test.skip=true'
             }
         }
-
-        stage('SonarQube') {
+        
+        stage('Deploy to Nexus') {
             steps {
-                withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar'
-                }
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '172.20.116.17:8081',  
+                    groupId: 'tn.esprit.spring',
+                    version: '1.0',  
+                    repository: 'maven-releases',  
+                    credentialsId: 'deploymentRepo',  
+                    artifacts: [
+                        [
+                            artifactId: 'gestion-station-ski',
+                            classifier: '',
+                            file: 'target/gestion-station-ski-1.0.jar',  
+                            type: 'jar'
+                        ],
+                        [
+                            artifactId: 'gestion-station-ski',
+                            classifier: '',
+                            file: 'pom.xml',  
+                            type: 'pom'
+                        ]
+                    ]
+                )
             }
         }
 
