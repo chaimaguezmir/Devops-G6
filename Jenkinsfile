@@ -7,9 +7,7 @@ pipeline {
     environment {
         SONAR_HOST_URL = 'http://localhost:9000/'
         SONAR_LOGIN = 'sqa_c515a1e9bdea143cc25ad34e935baf4f14a266be'
-
         DOCKER_IMAGE = "ahlemtrabelsi/gestion-station-ski:1.0.0"
-
     }
     stages {
         stage('GIT') {
@@ -39,31 +37,26 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest clean test'
             }
         }
-        
         stage('Deploy to Nexus') {
             steps {
                 // Déployer le package dans Nexus
                 sh 'mvn deploy -DskipTests'
             }
         }
-
         stage('Build JAR') {
             steps {
                 sh 'mvn package -Dmaven.test.skip=true'
             }
         }
-        
-    
         stage('Deploy avec Docker Compose') {
             steps {
                 script {
-                    sh 'docker pull $DOCKER_IMAGE'
+                    sh "docker pull ${DOCKER_IMAGE}"
                     sh 'docker compose down || true'
                     sh 'docker compose up -d'
                 }
             }
         }
-
         stage('Vérification des conteneurs') {
             steps {
                 script {
@@ -82,12 +75,9 @@ pipeline {
             }
         }
     }
-
     post {
         always {
             echo 'Pipeline terminé.'
         }
-    }
-       
     }
 }
