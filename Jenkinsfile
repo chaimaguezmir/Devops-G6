@@ -117,17 +117,33 @@ pipeline {
         success {
             emailext(
                 subject: "✅ Succès Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
-                body: "Le pipeline a été exécuté avec succès.\nDétails : ${env.BUILD_URL}",
+                body: """Le pipeline a été exécuté avec succès.
+
+Détails : ${env.BUILD_URL}
+""",
                 to: 'abettouzia@gmail.com',
                 from: 'Jenkins CI/CD <abettouzia@gmail.com>'
             )
         }
+
         failure {
-            emailext(
-                subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
-                body: "Le pipeline a échoué.\nConsultez les logs ici : ${env.BUILD_URL}",
-                to: 'abettouzia@gmail.com',
-                from: 'Jenkins CI/CD <abettouzia@gmail.com>'
+            script {
+                def log = currentBuild.rawBuild.getLog(50).join('\n')  // les 50 dernières lignes
+                emailext(
+                    subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
+                    body: """Le pipeline a échoué.
+
+Branche : Instructor
+
+Voici un extrait du log :
+--------------------------------------------------
+${log}
+--------------------------------------------------
+
+Consultez les logs ici : ${env.BUILD_URL}
+""",
+                    to: 'abettouzia@gmail.com',
+                    from: 'Jenkins CI/CD <abettouzia@gmail.com>'
             )
         }
     }
