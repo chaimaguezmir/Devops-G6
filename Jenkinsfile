@@ -114,38 +114,23 @@ pipeline {
         always {
             echo 'Pipeline terminé.'
         }
-        success {
+    failure {
+        script {
+            def logExcerpt = currentBuild.rawBuild.getLog(50).join('\n')
             emailext(
-                subject: "✅ Succès Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
-                body: """Le pipeline a été exécuté avec succès.
+                subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
+                body: """Le pipeline a échoué.
 
-Détails : ${env.BUILD_URL}
+Extrait des 50 dernières lignes :
+---------------------------------
+${logExcerpt}
+---------------------------------
+
+Consultez les logs complets ici : ${env.BUILD_URL}
 """,
-                to: 'abettouzia@gmail.com',
-                from: 'Jenkins CI/CD <abettouzia@gmail.com>'
+                to: 'abettouzia@gmail.com'
             )
         }
-
-        failure {
-            script {
-                def log = currentBuild.rawBuild.getLog(50).join('\n')  // les 20 dernières lignes
-                emailext(
-                    subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
-                    body: """Le pipeline a échoué.
-
-Branche : Instructor
-
-Voici un extrait du log :
---------------------------------------------------
-${log}
---------------------------------------------------
-
-Consultez les logs ici : ${env.BUILD_URL}
-""",
-                    to: 'abettouzia@gmail.com',
-                    from: 'Jenkins CI/CD <abettouzia@gmail.com>'
-                )
-            }
-        }
     }
+}
 }
