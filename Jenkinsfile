@@ -118,14 +118,14 @@ pipeline {
             emailext(
                 subject: "✅ Succès Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
                 body: "Le pipeline a été exécuté avec succès.\nDétails : ${env.BUILD_URL}",
-                to: 'votre.email@gmail.com'
+                to: 'abettouzia'
             )
         }
         failure {
             emailext(
                 subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
                 body: "Le pipeline a échoué.\nConsultez les logs ici : ${env.BUILD_URL}",
-                to: 'votre.email@gmail.com'
+                to: 'abettouzia'
             )
         }
     }
