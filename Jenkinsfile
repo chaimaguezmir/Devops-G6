@@ -37,12 +37,7 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest clean test'
             }
         }
-        stage('Deploy to Nexus') {
-            steps {
-                // Déployer le package dans Nexus
-                sh 'mvn deploy -DskipTests'
-            }
-        }
+      
         stage('Build JAR') {
             steps {
                 sh 'mvn package -Dmaven.test.skip=true'
