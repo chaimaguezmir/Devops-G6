@@ -128,7 +128,7 @@ Détails : ${env.BUILD_URL}
 
         failure {
             script {
-                def log = currentBuild.rawBuild.getLog(20).join('\n')  // les 20 dernières lignes
+                def log = currentBuild.rawBuild.getLog(50).join('\n')  // les 20 dernières lignes
                 emailext(
                     subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
                     body: """Le pipeline a échoué.
