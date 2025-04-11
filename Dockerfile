@@ -1,10 +1,11 @@
 # Utilisation d'une image JDK plus récente
 FROM openjdk:17-jdk-alpine
 
-LABEL authors="Anas Bettouzia"
+LABEL authors="Ahlem Trabelsi"
 
 EXPOSE 8089
 
-ADD target/gestion-station-ski-1.0.jar app.jar
+# Ajouter votre JAR
+ADD target/gestion-station-ski-1.2.2.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
