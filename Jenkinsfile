@@ -84,7 +84,22 @@ pipeline {
         always {
             echo 'Pipeline terminé.'
         }
+        success {
+            emailext(
+                subject: "✅ Succès Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
+                body: "Le pipeline a été exécuté avec succès.\nDétails : ${env.BUILD_URL}",
+                to: 'chaima.guezmir20@gmail.com',
+                from: 'Jenkins CI/CD <chaima.guezmir20@gmail.com>'
+            )
+        }
+        failure {
+            emailext(
+                subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
+                body: "Le pipeline a échoué.\nConsultez les logs ici : ${env.BUILD_URL}",
+                to: 'chaima.guezmir20@gmail.com',
+                from: 'Jenkins CI/CD <chaima.guezmir20@gmail.com>'
+            )
+        }
     }
 }
-
 
