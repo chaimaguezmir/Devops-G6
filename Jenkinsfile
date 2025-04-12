@@ -108,6 +108,27 @@ pipeline {
                 }
             }
         }
+
+       // 🆕 Génération du rapport HTML des tests
+        stage('Générer rapport HTML de test') {
+            steps {
+                sh 'mvn surefire-report:report-only'
+            }
+        }
+
+        // 🆕 Publication du rapport HTML dans Jenkins
+        stage('Publier rapport HTML') {
+            steps {
+                publishHTML(target: [
+                    reportDir: 'target/site/surefire-report',
+                    reportFiles: 'index.html',
+                    reportName: 'Rapport de tests (Surefire)',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
+            }
+        }
     }
 
     post {
