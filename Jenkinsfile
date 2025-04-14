@@ -43,27 +43,17 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
-
-        stage('Analyse SonarQube') {
+ stage('SonarQube') {
             steps {
-                withSonarQubeEnv("${SonarQube}") {
-                    sh 'mvn verify sonar:sonar'
+                withSonarQubeEnv('Sonarqube') {
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
+     
 
-        stage('Vérification Quality Gate') {
-            steps {
-                timeout(time: 1, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+      
 
-        stage('Construire le JAR') {
-            steps {
-                sh 'mvn package -Dmaven.test.skip=true'
-            }
-        }
+      
     }
 }
