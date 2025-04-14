@@ -41,6 +41,13 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest clean test'
             }
         }
+       stage('Analyse SonarQube') {
+    steps {
+        withSonarQubeEnv('sonarqube') {
+            sh 'mvn sonar:sonar -Dsonar.projectKey=gestion-station -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN'
+        }
+    }
+}
 
        stage('SonarQube') {
              steps {
