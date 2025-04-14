@@ -5,8 +5,8 @@ pipeline {
         maven 'M2_HOME'
     }
     environment {
-        // Exemple de variable d'environnement
-        MY_VARIABLE = 'value'
+        SONARQUBE_SERVER = 'SonarQube' // nom de ton serveur Sonar configuré dans Jenkins (Manage Jenkins > Configure System)
+        SONAR_TOKEN = credentials('SONAR_TOKEN') // récupère le token via ID
     }
     stages {
         stage('GIT') {
@@ -40,6 +40,30 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest clean test'
             }
         }
+
+
+        stages {
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv("${SONARQUBE_SERVER}") {
+                    sh """
+                        ./mvnw clean verify sonar:sonar \
+                        -Dsonar.projectKey=mon-projet \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=${SONAR_TOKEN}
+                    """
+                }
+            }
+        }
+        stage('SonarQube') {
+    steps {
+        withSonarQubeEnv('sq1') {
+            withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+                sh "mvn sonar:sonar -Dsonar.token=${SONAR_TOKEN}"
+            }
+        }
+    }
+}
 
         stage('SonarQube') {
             steps {
