@@ -1,13 +1,16 @@
 pipeline {
     agent any
+
     tools {
         jdk 'JAVA_HOME'
         maven 'M2_HOME'
     }
+
     environment {
-        SONARQUBE_SERVER = 'SonarQube' // nom de ton serveur Sonar configuré dans Jenkins (Manage Jenkins > Configure System)
-        SONAR_TOKEN = credentials('SONAR_TOKEN') // récupère le token via ID
+        SONARQUBE_SERVER = 'SonarQube' // Nom du serveur Sonar configuré dans Jenkins
+        SONAR_TOKEN = credentials('SONAR_TOKEN') // ID de ton token Jenkins Credential
     }
+
     stages {
         stage('GIT') {
             steps {
@@ -16,7 +19,7 @@ pipeline {
             }
         }
 
-        stage('Maven') {
+        stage('Maven Versions') {
             steps {
                 sh "java -version"
                 sh "mvn -version"
@@ -37,17 +40,15 @@ pipeline {
 
         stage('Test Projet') {
             steps {
-                sh 'mvn -Dtest=CourseServicesImplTest clean test'
+                sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
 
-
-        stages {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_SERVER}") {
                     sh """
-                        ./mvnw clean verify sonar:sonar \
+                        mvn sonar:sonar \
                         -Dsonar.projectKey=mon-projet \
                         -Dsonar.host.url=http://localhost:9000 \
                         -Dsonar.login=${SONAR_TOKEN}
@@ -55,23 +56,12 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube') {
-    steps {
-        withSonarQubeEnv('sq1') {
-            withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-                sh "mvn sonar:sonar -Dsonar.token=${SONAR_TOKEN}"
-            }
-        }
-    }
-}
 
-        stage('SonarQube') {
+        stage('Quality Gate') {
             steps {
-                sh 'mvn sonar:sonar'
-                // Décommentez la ligne suivante si Sonar est configuré dans Jenkins
-                // withSonarQubeEnv('sq1') {
-                //     sh 'mvn sonar:sonar'
-                // }
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
 
@@ -80,5 +70,5 @@ pipeline {
                 sh 'mvn package -Dmaven.test.skip=true'
             }
         }
-    } // ✅ fermeture de stages
-} // ✅ fermeture du pipeline
+    }
+}
