@@ -44,18 +44,14 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv("${SonarQube}") {
-                    sh """
-                        mvn sonar:sonar \
-                        -Dsonar.projectKey=mon-projet \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=${SONAR_TOKEN}
-                    """
-                }
-            }
+      stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube') { // <-- ce nom doit correspondre au nom défini dans Jenkins > Manage Jenkins > Configure System
+            sh 'mvn clean verify sonar:sonar'
         }
+    }
+}
+
 
         stage('Quality Gate') {
             steps {
