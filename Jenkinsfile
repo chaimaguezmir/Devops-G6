@@ -7,66 +7,52 @@ pipeline {
     }
 
     environment {
-        SONARQUBE_SERVER = 'SonarQube' // Nom du serveur Sonar configuré dans Jenkins
-        SONAR_TOKEN = credentials('SONAR_TOKEN') // ID de ton token Jenkins Credential
+        SONARQUBE_SERVER = 'SonarQube' // Nom du serveur Sonar configuré dans Jenkins > Manage Jenkins > Configure System
+        SONAR_TOKEN = credentials('SONAR_TOKEN') // ID du token Jenkins Credential
     }
 
     stages {
-        stage('GIT') {
+        stage('Cloner le dépôt GIT') {
             steps {
                 git branch: 'Course',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git'
             }
         }
-          stage('SonarQube') {
+
+        stage('Afficher les versions Java et Maven') {
             steps {
-                withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar'
-                }
+                sh 'java -version'
+                sh 'mvn -version'
             }
         }
 
-        stage('Build JAR') {
-            steps {
-                sh 'mvn package -Dmaven.test.skip=true'
-            }
-        }
-
-        stage('Maven Versions') {
-            steps {
-                sh "java -version"
-                sh "mvn -version"
-            }
-        }
-
-        stage('MVN CLEAN') {
+        stage('Nettoyer le projet') {
             steps {
                 sh 'mvn clean'
             }
         }
 
-        stage('MVN COMPILE') {
+        stage('Compiler le projet') {
             steps {
                 sh 'mvn compile'
             }
         }
 
-        stage('Test Projet') {
+        stage('Tester le projet') {
             steps {
                 sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
 
-      stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube') { // <-- ce nom doit correspondre au nom défini dans Jenkins > Manage Jenkins > Configure System
-            sh 'mvn clean verify sonar:sonar'
+        stage('Analyse SonarQube') {
+            steps {
+                withSonarQubeEnv("${SonarQube}") {
+                    sh 'mvn verify sonar:sonar'
+                }
+            }
         }
-    }
-}
 
-
-        stage('Quality Gate') {
+        stage('Vérification Quality Gate') {
             steps {
                 timeout(time: 1, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
@@ -74,7 +60,7 @@ pipeline {
             }
         }
 
-        stage('Build JAR') {
+        stage('Construire le JAR') {
             steps {
                 sh 'mvn package -Dmaven.test.skip=true'
             }
