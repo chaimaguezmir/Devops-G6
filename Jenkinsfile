@@ -5,8 +5,7 @@ pipeline {
         maven 'M2_HOME'
     }
     environment {
-        SONAR_HOST_URL = 'http://localhost:9000/'
-        SONAR_LOGIN = 'sqa_c515a1e9bdea143cc25ad34e935baf4f14a266be'
+        
         DOCKER_IMAGE = "ahlemtrabelsi/gestion-station-ski:1.0.0"
         MAVEN_REPO_URL = "http://localhost:8081/repository/maven-releases/" // Nexus
     }
