@@ -5,7 +5,8 @@ pipeline {
         maven 'M2_HOME'
     }
     environment {
-        // Tu peux ajouter des variables d’environnement ici si nécessaire
+        // Exemple de variable d'environnement
+        MY_VARIABLE = 'value'
     }
     stages {
         stage('GIT') {
@@ -43,7 +44,7 @@ pipeline {
         stage('SonarQube') {
             steps {
                 sh 'mvn sonar:sonar'
-                // Tu peux activer le bloc suivant si tu as bien configuré Sonar dans Jenkins
+                // Décommentez la ligne suivante si Sonar est configuré dans Jenkins
                 // withSonarQubeEnv('sq1') {
                 //     sh 'mvn sonar:sonar'
                 // }
