@@ -18,6 +18,19 @@ pipeline {
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git'
             }
         }
+          stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('sq1') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Build JAR') {
+            steps {
+                sh 'mvn package -Dmaven.test.skip=true'
+            }
+        }
 
         stage('Maven Versions') {
             steps {
