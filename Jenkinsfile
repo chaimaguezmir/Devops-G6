@@ -6,8 +6,7 @@ pipeline {
     }
     environment {
         
-        DOCKER_IMAGE = "ahlemtrabelsi/gestion-station-ski:1.0.0"
-        MAVEN_REPO_URL = "http://localhost:8081/repository/maven-releases/" // Nexus
+       
     }
     stages {
         stage('GIT') {
@@ -58,46 +57,5 @@ pipeline {
             }
         }
 
-        stage('Déploiement Nexus') {
-            steps {
-                // Assurez-vous que settings.xml contient le serveur Nexus avec credentials
-                sh 'mvn deploy -Dmaven.test.skip=true'
-            }
-        }
-
-        stage('Deploy avec Docker Compose') {
-            steps {
-                script {
-                    sh "docker pull ${DOCKER_IMAGE}"
-                    sh 'docker compose down || true'
-                    sh 'docker compose up -d'
-                }
-            }
-        }
-
-        stage('Vérification des conteneurs') {
-            steps {
-                script {
-                    sh 'docker ps'
-                }
-            }
-        }
-
-        stage('Vérification Prometheus') {
-            steps {
-                script {
-                    echo 'Vérification de l\'exposition des métriques de Jenkins'
-                    sh 'curl -s http://172.28.214.109:8080/prometheus || echo "Erreur: Jenkins ne fournit pas les métriques"'
-                    echo 'Vérification que Prometheus récupère les métriques'
-                    sh 'curl -s http://localhost:9090/api/v1/targets | jq .'
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline terminé.'
-        }
-    }
+       
 }
