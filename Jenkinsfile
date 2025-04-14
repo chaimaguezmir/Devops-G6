@@ -7,53 +7,49 @@ pipeline {
     }
 
     environment {
-        SONARQUBE_SERVER = 'SonarQube' // Nom du serveur Sonar configuré dans Jenkins > Manage Jenkins > Configure System
-        SONAR_TOKEN = credentials('SONAR_TOKEN') // ID du token Jenkins Credential
+        SONARQUBE_SERVER = 'SonarQube' // Name of the SonarQube server configured in Jenkins
+        SONAR_TOKEN = credentials('SONAR_TOKEN') // Jenkins Credential ID for the token
     }
 
     stages {
-        stage('Cloner le dépôt GIT') {
+        stage('Clone Git Repository') {
             steps {
                 git branch: 'Course',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git'
             }
         }
 
-        stage('Afficher les versions Java et Maven') {
+        stage('Display Java and Maven Versions') {
             steps {
                 sh 'java -version'
                 sh 'mvn -version'
             }
         }
 
-        stage('Nettoyer le projet') {
+        stage('Clean Project') {
             steps {
                 sh 'mvn clean'
             }
         }
 
-        stage('Compiler le projet') {
+        stage('Compile Project') {
             steps {
                 sh 'mvn compile'
             }
         }
 
-        stage('Tester le projet') {
+        stage('Test Project') {
             steps {
                 sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
- stage('SonarQube') {
+
+        stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('Sonarqube') {
                     sh 'mvn sonar:sonar'
                 }
             }
         }
-     
-
-      
-
-      
     }
 }
