@@ -5,8 +5,7 @@ pipeline {
         maven 'M2_HOME'
     }
     environment {
-        
-       
+        // Tu peux ajouter des variables d’environnement ici si nécessaire
     }
     stages {
         stage('GIT') {
@@ -40,14 +39,14 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest clean test'
             }
         }
-     
 
-       stage('SonarQube') {
-             steps {
-                    sh 'mvn sonar:sonar'
-               //  withSonarQubeEnv('sq1') {
-                 
-                //}
+        stage('SonarQube') {
+            steps {
+                sh 'mvn sonar:sonar'
+                // Tu peux activer le bloc suivant si tu as bien configuré Sonar dans Jenkins
+                // withSonarQubeEnv('sq1') {
+                //     sh 'mvn sonar:sonar'
+                // }
             }
         }
 
@@ -56,6 +55,5 @@ pipeline {
                 sh 'mvn package -Dmaven.test.skip=true'
             }
         }
-
-       
-}
+    } // ✅ fermeture de stages
+} // ✅ fermeture du pipeline
