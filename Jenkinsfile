@@ -50,11 +50,7 @@ pipeline {
             }
         }
 
-        stage('📊 Code Coverage') {
-            steps {
-                sh 'mvn jacoco:prepare-agent test jacoco:report'
-            }
-        }
+       
 
         stage('📦 Package Project') {
             steps {
