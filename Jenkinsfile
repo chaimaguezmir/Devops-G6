@@ -65,7 +65,7 @@ pipeline {
                             groupId: 'tn.esprit.spring',
                             version: '1.2.2',
                             repository: 'maven-releases',
-                            credentialsId: 'deploymentRepo',
+                            credentialsId: 'nexus-credential',
                             artifacts: [
                                 [
                                     artifactId: 'gestion-station-ski',
