@@ -70,14 +70,16 @@ pipeline {
                     protocol: 'http',
                     nexusUrl: '172.27.106.47:8081',
                     groupId: 'tn.esprit.spring',
-                    version: '1.2.3', // ✨ modifié
-                    repository: 'maven-releases',
+                    version: '1.2.2-SNAPSHOT',
+                    file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar',
+                    repository: 'maven-snapshots',
+
                     credentialsId: 'deploymentRepo',
                     artifacts: [
                         [
                             artifactId: 'gestion-station-ski',
                             classifier: '',
-                            file: 'target/gestion-station-ski-1.2.3.jar', // ✨ modifié
+                            file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar', // ✨ modifié
                             type: 'jar'
                         ],
                         [
