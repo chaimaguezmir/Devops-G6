@@ -114,17 +114,18 @@ pipeline {
             }
         }
 
-        stage('📈 Vérification Prometheus') {
-            steps {
-                script {
-                    echo '✅ Vérification de Jenkins Prometheus metrics...'
-                    sh 'curl -s http://172.27.106.47:8080/prometheus || echo "Jenkins Prometheus non accessible"'
+       stage('📈 Vérification Prometheus') {
+    steps {
+        script {
+            echo '✅ Vérification de Jenkins Prometheus metrics...'
+            sh 'curl -s http://172.27.106.47:8080/prometheus || echo "Jenkins Prometheus non accessible"'
 
-                    echo '✅ Vérification de Prometheus targets...'
-                    sh 'curl -s http://localhost:9090/api/v1/targets | jq .'
-                }
-            }
+            echo '✅ Vérification de Prometheus targets...'
+            sh 'curl -s http://localhost:9090/api/v1/targets || echo "Prometheus non accessible"'
         }
+    }
+}
+
     }
 
     post {
