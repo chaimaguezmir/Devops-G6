@@ -50,6 +50,12 @@ pipeline {
             }
         }
 
+        stage('📊 Code Coverage') {
+            steps {
+                sh 'mvn jacoco:prepare-agent test jacoco:report'
+            }
+        }
+
         stage('📦 Package Project') {
             steps {
                 sh 'mvn package -DskipTests'
@@ -122,6 +128,16 @@ pipeline {
                     sh 'curl -s http://localhost:9090/api/v1/targets | jq .'
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            archiveArtifacts artifacts: "target/*.jar", fingerprint: true
+            echo '✅ Pipeline terminé avec succès.'
+        }
+        failure {
+            echo '❌ Le pipeline a échoué.'
         }
     }
 }
