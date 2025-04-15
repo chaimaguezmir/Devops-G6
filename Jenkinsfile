@@ -2,88 +2,91 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JAVA_HOME'
-        maven 'M2_HOME'
+        jdk 'JAVA_HOME'     // Nom configuré dans Jenkins > Global Tool Configuration
+        maven 'M2_HOME'     // Nom configuré dans Jenkins > Global Tool Configuration
     }
 
     environment {
-        DOCKER_IMAGE = "ahlemtrabelsi/gestion-station-ski:1.0.0"
+        VERSION = "1.2.2-SNAPSHOT"
+        ARTIFACT = "gestion-station-ski"
+        GROUP_ID = "tn.esprit.spring"
+        DOCKER_IMAGE = "ahlemtrabelsi/${ARTIFACT}:1.0.0"
         SONAR_HOST_URL = 'http://localhost:9000'
         SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6'
+        NEXUS_URL = '172.27.106.47:8081'
+        NEXUS_REPO = 'maven-snapshots'
+        CREDENTIALS_ID = 'deploymentRepo'
     }
 
     stages {
-        stage('Clone Git Repository') {
+        stage('📥 Clone Git Repository') {
             steps {
-                git branch: 'Course',
-                    url: 'https://github.com/chaimaguezmir/Devops-G6.git'
+                git branch: 'Course', url: 'https://github.com/chaimaguezmir/Devops-G6.git'
             }
         }
 
-        stage('Display Java and Maven Versions') {
+        stage('⚙️ Display Java & Maven Versions') {
             steps {
                 sh 'java -version'
                 sh 'mvn -version'
             }
         }
 
-        stage('Clean Project') {
+        stage('🧹 Clean Project') {
             steps {
                 sh 'mvn clean'
             }
         }
 
-        stage('Compile Project') {
+        stage('🔨 Compile Project') {
             steps {
                 sh 'mvn compile'
             }
         }
 
-        stage('Test Project') {
+        stage('🧪 Run Tests') {
             steps {
                 sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
 
-        stage('Build Maven') {
+        stage('📦 Package Project') {
             steps {
                 sh 'mvn package -DskipTests'
                 sh 'ls -lh target/'
             }
         }
 
-        stage('SonarQube Analysis') {
+        stage('🔍 SonarQube Analysis') {
             steps {
                 sh """
                     mvn sonar:sonar \
-                    -Dsonar.projectKey=your_project_key \
-                    -Dsonar.host.url=${SONAR_HOST_URL} \
-                    -Dsonar.login=${SONAR_LOGIN}
+                        -Dsonar.projectKey=${ARTIFACT} \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONAR_LOGIN}
                 """
             }
         }
 
-        stage('Deploy to Nexus') {
+        stage('📤 Deploy to Nexus') {
             steps {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: '172.27.106.47:8081',
-                    groupId: 'tn.esprit.spring',
-                    version: '1.2.2-SNAPSHOT',
-                    file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar',
-                    repository: 'maven-snapshots',
-
-                    credentialsId: 'deploymentRepo',
+                    nexusUrl: "${NEXUS_URL}",
+                    groupId: "${GROUP_ID}",
+                    version: "${VERSION}",
+                    repository: "${NEXUS_REPO}",
+                    credentialsId: "${CREDENTIALS_ID}",
                     artifacts: [
                         [
-                            artifactId: 'gestion-station-ski',
+                            artifactId: "${ARTIFACT}",
                             classifier: '',
-                            file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar', // ✨ modifié
+                            file: "target/${ARTIFACT}-${VERSION}.jar",
                             type: 'jar'
                         ],
                         [
-                            artifactId: 'gestion-station-ski',
+                            artifactId: "${ARTIFACT}",
                             classifier: '',
                             file: 'pom.xml',
                             type: 'pom'
@@ -93,30 +96,29 @@ pipeline {
             }
         }
 
-        stage('Deploy avec Docker Compose') {
+        stage('🐳 Docker Compose Deploy') {
             steps {
                 script {
-                    sh 'docker pull $DOCKER_IMAGE'
+                    sh 'docker pull $DOCKER_IMAGE || true'
                     sh 'docker compose down || true'
                     sh 'docker compose up -d'
                 }
             }
         }
 
-        stage('Vérification des conteneurs') {
+        stage('🔎 Vérification des conteneurs') {
             steps {
-                script {
-                    sh 'docker ps'
-                }
+                sh 'docker ps'
             }
         }
 
-        stage('Vérification Prometheus') {
+        stage('📈 Vérification Prometheus') {
             steps {
                 script {
-                    echo 'Vérification de l\'exposition des métriques de Jenkins'
-                    sh 'curl -s http://172.27.106.47:8080/prometheus || echo "Erreur: Jenkins ne fournit pas les métriques"'
-                    echo 'Vérification que Prometheus récupère les métriques'
+                    echo '✅ Vérification de Jenkins Prometheus metrics...'
+                    sh 'curl -s http://172.27.106.47:8080/prometheus || echo "Jenkins Prometheus non accessible"'
+
+                    echo '✅ Vérification de Prometheus targets...'
                     sh 'curl -s http://localhost:9090/api/v1/targets | jq .'
                 }
             }
