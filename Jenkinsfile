@@ -7,6 +7,7 @@ pipeline {
     }
 
     environment {
+        DOCKER_IMAGE = "ahlemtrabelsi/gestion-station-ski:1.0.0"
         SONAR_HOST_URL = 'http://localhost:9000' // ✅ pas de slash à la fin
         SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6' // ⚠️ visible dans les logs Jenkins !
     }
@@ -54,11 +55,27 @@ pipeline {
                 """
             }
         }
-
-        stage('Deploy') {
+ stage('Deploy avec Docker Compose') {
             steps {
-                sh 'mvn deploy -Dmaven.test.skip=true'
+                script {
+                    sh 'docker pull $DOCKER_IMAGE'
+                    sh 'docker compose down || true'
+                    sh 'docker compose up -d'
+                }
             }
         }
+
+        stage('Vérification des conteneurs') {
+            steps {
+                script {
+                    sh 'docker ps'
+                }
+            }
+        }
+       // stage('Deploy') {
+         //   steps {
+           //     sh 'mvn deploy -Dmaven.test.skip=true'
+           // }
+       // }
     }
 }
