@@ -44,6 +44,13 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
+       
+        stage('Build Maven') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+                sh 'ls -lh target/'
+            }
+        
 
         stage('SonarQube Analysis') {
             steps {
