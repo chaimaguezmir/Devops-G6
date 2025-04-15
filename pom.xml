@@ -70,6 +70,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>gestion-station-ski-1.2.3</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
