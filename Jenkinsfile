@@ -70,14 +70,14 @@ pipeline {
                     protocol: 'http',
                     nexusUrl: '172.27.106.47:8081',
                     groupId: 'tn.esprit.spring',
-                    version: '1.2.2',
+                    version: '1.2.3', // ✨ modifié
                     repository: 'maven-releases',
                     credentialsId: 'deploymentRepo',
                     artifacts: [
                         [
                             artifactId: 'gestion-station-ski',
                             classifier: '',
-                            file: 'target/gestion-station-ski-1.2.2.jar',
+                            file: 'target/gestion-station-ski-1.2.3.jar', // ✨ modifié
                             type: 'jar'
                         ],
                         [
@@ -109,7 +109,7 @@ pipeline {
             }
         }
 
-           stage('Vérification Prometheus') {
+        stage('Vérification Prometheus') {
             steps {
                 script {
                     echo 'Vérification de l\'exposition des métriques de Jenkins'
@@ -119,6 +119,5 @@ pipeline {
                 }
             }
         }
-    
     }
 }
