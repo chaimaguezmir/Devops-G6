@@ -8,8 +8,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "ahlemtrabelsi/gestion-station-ski:1.0.0"
-        SONAR_HOST_URL = 'http://localhost:9000' // ✅ pas de slash à la fin
-        SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6' // ⚠️ visible dans les logs Jenkins !
+        SONAR_HOST_URL = 'http://localhost:9000'
+        SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6'
     }
 
     stages {
@@ -44,13 +44,13 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
-       
+
         stage('Build Maven') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn package -DskipTests'
                 sh 'ls -lh target/'
             }
-        
+        }
 
         stage('SonarQube Analysis') {
             steps {
@@ -63,35 +63,35 @@ pipeline {
             }
         }
 
-         stage('Deploy to Nexus') {
-                    steps {
-                        
-                        nexusArtifactUploader(
-                            nexusVersion: 'nexus3',
-                            protocol: 'http',
-                            nexusUrl: '172.27.106.47:8081',
-                            groupId: 'tn.esprit.spring',
-                            version: '1.2.2',
-                            repository: 'maven-releases',
-                            credentialsId: 'deploymentRepo',
-                            artifacts: [
-                                [
-                                    artifactId: 'gestion-station-ski',
-                                    classifier: '',
-                                    file: 'target/gestion-station-ski-1.2.2.jar',
-                                    type: 'jar'
-                                ],
-                                [
-                                    artifactId: 'gestion-station-ski',
-                                    classifier: '',
-                                    file: 'pom.xml',
-                                    type: 'pom'
-                                ]
-                            ]
-                        )
-                    }
-                }
- stage('Deploy avec Docker Compose') {
+        stage('Deploy to Nexus') {
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '172.27.106.47:8081',
+                    groupId: 'tn.esprit.spring',
+                    version: '1.2.2',
+                    repository: 'maven-releases',
+                    credentialsId: 'deploymentRepo',
+                    artifacts: [
+                        [
+                            artifactId: 'gestion-station-ski',
+                            classifier: '',
+                            file: 'target/gestion-station-ski-1.2.2.jar',
+                            type: 'jar'
+                        ],
+                        [
+                            artifactId: 'gestion-station-ski',
+                            classifier: '',
+                            file: 'pom.xml',
+                            type: 'pom'
+                        ]
+                    ]
+                )
+            }
+        }
+
+        stage('Deploy avec Docker Compose') {
             steps {
                 script {
                     sh 'docker pull $DOCKER_IMAGE'
@@ -108,10 +108,5 @@ pipeline {
                 }
             }
         }
-       // stage('Deploy') {
-         //   steps {
-           //     sh 'mvn deploy -Dmaven.test.skip=true'
-           // }
-       // }
     }
 }
