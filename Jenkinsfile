@@ -7,8 +7,8 @@ pipeline {
     }
 
     environment {
-        SONARQUBE_SERVER = 'sonarqube' // Name of the SonarQube server configured in Jenkins
-        SONAR_TOKEN = credentials('sonarqube') // Jenkins Credential ID for the token
+        SONARQUBE_SERVER = 'sonarqube' // Nom du serveur SonarQube dans Jenkins
+        SONAR_TOKEN = credentials('sonarqube') // ID du token dans les Credentials Jenkins
     }
 
     stages {
@@ -43,22 +43,23 @@ pipeline {
                 sh 'mvn -Dtest=CourseServicesImplTest test'
             }
         }
-  stage('SonarQube Analysis') {
+
+        stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_SERVER}") {
                     sh """
-                        mvn clean verify sonar:sonar \
+                        mvn sonar:sonar \
                             -Dsonar.projectKey=your_project_key \
-                            -Dsonar.host.url=$SONARQUBE_SERVER \
                             -Dsonar.login=$SONAR_TOKEN
                     """
                 }
             }
         }
-        stage('SonarQube Analysis') {
+
+        stage('Quality Gate') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn sonar:sonar'
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
