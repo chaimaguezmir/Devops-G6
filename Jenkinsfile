@@ -65,8 +65,7 @@ pipeline {
 
          stage('Deploy to Nexus') {
                     steps {
-                        sh 'ls -lh target/'
-                        sh 'test -f target/gestion-station-ski-1.2.2.jar'
+                        
                         nexusArtifactUploader(
                             nexusVersion: 'nexus3',
                             protocol: 'http',
