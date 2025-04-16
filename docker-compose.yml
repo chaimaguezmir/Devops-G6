@@ -1,34 +1,30 @@
-version: "3.8"
-
 services:
-  mysqldb:
-    image: mysql:5.7
-    restart: unless-stopped
+  db:
+    image: mongo:4.2
+    container_name: db
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_DATABASE=stationSki
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
-      - 3306:3306
+      - "27017:27017"
     volumes:
-      - db:/var/lib/mysql
+      - ./data/dump:/dump
+      - mongo-data:/data/db
 
-  app-station-ski:
-    depends_on:
-      - mysqldb
-    image: anasbettouzia/gestion-station-ski:1.0.0
-    restart: on-failure
+  app:
+    image: anasbettouzia/nodemongoapp:6.0
+    container_name: back
+    restart: always
     ports:
-      - 8089:8089
+      - "3001:3001"
+    depends_on:
+      - db
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true",
-        "spring.datasource.username" : "root",
-        "spring.datasource.password" : "",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
-      }'
-    stdin_open: true
-    tty: true
+      PORT: 3001
+      MONGO_URI: mongodb://root:example@db:27017/EmergencyManagementSystemBD?authSource=admin
+    working_dir: /app
+    command: npm run dev
 
 volumes:
-  db:
+  mongo-data:
