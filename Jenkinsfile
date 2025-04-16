@@ -62,11 +62,12 @@ pipeline {
             }
         }
 
-        stage('📤 Deploy to Nexus') {
-            steps {
-                sh 'mvn deploy -Dmaven.test.skip=true'
-            }
-        }
+       stage('📤 Deploy to Nexus') {
+         steps {
+             sh 'mvn deploy -s settings.xml -Dmaven.test.skip=true'
+                 }
+          }
+
 
         stage('🐳 Docker Compose Deploy') {
             steps {
