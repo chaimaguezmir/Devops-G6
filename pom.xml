@@ -124,12 +124,6 @@
         </repository>
     </distributionManagement>
 
-    <!-- Optionnel : Repository Maven Central si Nexus est limité -->
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-    </repositories>
+  
 
 </project>
