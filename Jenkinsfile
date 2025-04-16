@@ -62,33 +62,25 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nexus') {
-            steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: '172.27.106.47:8081',  
-                    groupId: 'tn.esprit.spring',
-                    version: '1.0',  
-                    repository: 'maven-releases',  
-                    credentialsId: 'deploymentRepo',  
-                    artifacts: [
-                        [
-                            artifactId: 'gestion-station-ski',
-                            classifier: '',
-                            file: 'target/gestion-station-ski-1.0.jar',  
-                            type: 'jar'
-                        ],
-                        [
-                            artifactId: 'gestion-station-ski',
-                            classifier: '',
-                            file: 'pom.xml',  
-                            type: 'pom'
-                        ]
-                    ]
-                )
-            }
-        }
+       stage('📤 Deploy to Nexus') {
+    steps {
+        nexusArtifactUploader(
+            nexusVersion: 'nexus3',
+            protocol: 'http',
+            nexusUrl: 'localhost:8081',
+            groupId: 'tn.esprit.spring',
+            version: '1.2.2',
+            repository: 'maven-releases',
+            credentialsId: 'nexus-credentials',
+            artifacts: [
+                [artifactId: 'gestion-station-ski',
+                 classifier: '',
+                 file: 'target/gestion-station-ski-1.2.2.jar',
+                 type: 'jar']
+            ]
+        )
+    }
+}
 
        stage('📤 Deploy to Nexus') {
          steps {
