@@ -70,31 +70,9 @@ pipeline {
             }
         }
 
-        stage('📤 Deploy to Nexus') {
+        stage('Deploy') {
             steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: "${NEXUS_URL}",
-                    groupId: "${GROUP_ID}",
-                    version: "${VERSION}",
-                    repository: "${NEXUS_REPO}",
-                    credentialsId: "${CREDENTIALS_ID}",
-                    artifacts: [
-                        [
-                            artifactId: "${ARTIFACT}",
-                            classifier: '',
-                            file: "target/${ARTIFACT}-${VERSION}.jar",
-                            type: 'jar'
-                        ],
-                        [
-                            artifactId: "${ARTIFACT}",
-                            classifier: '',
-                            file: 'pom.xml',
-                            type: 'pom'
-                        ]
-                    ]
-                )
+                sh 'mvn deploy -Dmaven.test.skip=true'
             }
         }
 
