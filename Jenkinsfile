@@ -7,15 +7,11 @@ pipeline {
     }
 
     environment {
-        VERSION = "1.2.2-SNAPSHOT"
-        ARTIFACT = "gestion-station-ski"
-        GROUP_ID = "tn.esprit.spring"
+  
         DOCKER_IMAGE = "ahlemtrabelsi/${ARTIFACT}:1.0.0"
         SONAR_HOST_URL = 'http://localhost:9000'
         SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6'
-        NEXUS_URL = '172.27.106.47:8081'
-        NEXUS_REPO = 'maven-snapshots'
-        CREDENTIALS_ID = 'deploymentRepo'
+      
     }
 
     stages {
