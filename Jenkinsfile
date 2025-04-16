@@ -2,16 +2,15 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JAVA_HOME'     // Nom configuré dans Jenkins > Global Tool Configuration
-        maven 'M2_HOME'     // Nom configuré dans Jenkins > Global Tool Configuration
+        jdk 'JAVA_HOME'
+        maven 'M2_HOME'
     }
 
     environment {
-  
+        ARTIFACT = "gestion-station-ski"
         DOCKER_IMAGE = "ahlemtrabelsi/${ARTIFACT}:1.0.0"
         SONAR_HOST_URL = 'http://localhost:9000'
         SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6'
-      
     }
 
     stages {
@@ -46,12 +45,9 @@ pipeline {
             }
         }
 
-       
-
         stage('📦 Package Project') {
             steps {
                 sh 'mvn package -DskipTests'
-                sh 'ls -lh target/'
             }
         }
 
@@ -66,7 +62,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('📤 Deploy to Nexus') {
             steps {
                 sh 'mvn deploy -Dmaven.test.skip=true'
             }
@@ -88,19 +84,13 @@ pipeline {
             }
         }
 
-       stage('📈 Vérification Prometheus') {
-    steps {
-        script {
-            echo '✅ Vérification de Jenkins Prometheus metrics...'
-            sh 'curl -s http://172.27.106.47:8080/prometheus || echo "Jenkins Prometheus non accessible"'
-
-            echo '✅ Vérification de Prometheus targets...'
-            sh 'curl -s http://localhost:9090/api/v1/targets || echo "Prometheus non accessible"'
+        stage('📈 Vérification Prometheus') {
+            steps {
+                sh 'curl -s http://172.27.106.47:8080/prometheus || echo "Jenkins Prometheus non accessible"'
+                sh 'curl -s http://localhost:9090/api/v1/targets || echo "Prometheus non accessible"'
+            }
         }
     }
-}
-
-    } 
 
     post {
         success {
