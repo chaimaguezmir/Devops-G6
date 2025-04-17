@@ -1,124 +1,125 @@
-pipeline {
-    agent any
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-    tools {
-        jdk 'JAVA_HOME'
-        maven 'M2_HOME'
-    }
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.9</version>
+        <relativePath/>
+    </parent>
 
-    environment {
-        ARTIFACT = "gestion-station-ski"
-        DOCKER_IMAGE = "ahlemtrabelsi/${ARTIFACT}:1.0.0"
-        SONAR_HOST_URL = 'http://localhost:9000'
-        SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6'
-    }
+    <groupId>tn.esprit.spring</groupId>
+    <artifactId>gestion-station-ski</artifactId>
+    <version>1.2.2</version>
+    <name>gestion-station-ski</name>
+    <description>Demo project for Spring Boot</description>
 
-    stages {
-        stage('📥 Clone Git Repository') {
-            steps {
-                git branch: 'Course', url: 'https://github.com/chaimaguezmir/Devops-G6.git'
-            }
-        }
+    <properties>
+        <java.version>17</java.version>
+    </properties>
 
-        stage('⚙️ Display Java & Maven Versions') {
-            steps {
-                sh 'java -version'
-                sh 'mvn -version'
-            }
-        }
+    <dependencies>
+        <!-- Spring Boot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
-        stage('🧹 Clean Project') {
-            steps {
-                sh 'mvn clean'
-            }
-        }
+        <!-- Spring Boot Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
-        stage('🔨 Compile Project') {
-            steps {
-                sh 'mvn compile'
-            }
-        }
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
 
-        stage('🧪 Run Tests') {
-            steps {
-                sh 'mvn -Dtest=CourseServicesImplTest test'
-            }
-        }
+        <!-- Jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
 
-        stage('📦 Package Project') {
-            steps {
-                sh 'mvn package -DskipTests'
-            }
-        }
+        <!-- JPA (javax.persistence) -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
 
-        stage('🔍 SonarQube Analysis') {
-            steps {
-                sh """
-                    mvn sonar:sonar \
-                        -Dsonar.projectKey=${ARTIFACT} \
-                        -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.login=${SONAR_LOGIN}
-                """
-            }
-        }
+        <!-- OpenAPI / Swagger -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.12</version>
+        </dependency>
 
-        stage('✅ Vérification du JAR') {
-            steps {
-                sh 'ls -l target/*.jar'
-            }
-        }
+        <!-- MySQL Driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-        stage('📤 Deploy to Nexus') {
-            steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: 'localhost:8081',
-                    groupId: 'tn.esprit.spring',
-                    version: '1.2.2-SNAPSHOT',
-                    repository: 'maven-snapshots',
-                    credentialsId: 'deploymentRepo',
-                    artifacts: [
-                        [artifactId: 'gestion-station-ski',
-                         classifier: '',
-                         file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar',
-                         type: 'jar']
-                    ]
-                )
-            }
-        }
+        <!-- DevTools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
 
-        stage('🐳 Docker Compose Deploy') {
-            steps {
-                script {
-                    sh 'docker pull $DOCKER_IMAGE || true'
-                    sh 'docker compose down || true'
-                    sh 'docker compose up -d'
-                }
-            }
-        }
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-        stage('🔎 Vérification des conteneurs') {
-            steps {
-                sh 'docker ps'
-            }
-        }
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-        stage('📈 Vérification Prometheus') {
-            steps {
-                sh 'curl -s http://172.27.106.47:8080/prometheus || echo "Jenkins Prometheus non accessible"'
-                sh 'curl -s http://localhost:9090/api/v1/targets || echo "Prometheus non accessible"'
-            }
-        }
-    }
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-    post {
-        success {
-            archiveArtifacts artifacts: "target/*.jar", fingerprint: true
-            echo '✅ Pipeline terminé avec succès.'
-        }
-        failure {
-            echo '❌ Le pipeline a échoué.'
-        }
-    }
-}
+    <build>
+        <plugins>
+            <!-- Spring Boot Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Maven Deploy Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+
+ 
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>deploymentRepo</id>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+
+</project>
