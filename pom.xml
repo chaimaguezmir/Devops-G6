@@ -12,7 +12,7 @@
 
     <groupId>tn.esprit.spring</groupId>
     <artifactId>gestion-station-ski</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.2-SNAPSHOT</version>
     <name>gestion-station-ski</name>
     <description>Demo project for Spring Boot</description>
 
@@ -117,10 +117,14 @@
     </build>
 
     <distributionManagement>
+        <snapshotRepository>
+            <!-- Snapshot repository URL, change it to your actual Nexus snapshot URL -->
+            <id>deploymentRepo</id>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
         <repository>
             <id>deploymentRepo</id>
             <url>http://localhost:8081/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
-
 </project>
