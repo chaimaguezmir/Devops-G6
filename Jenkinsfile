@@ -49,7 +49,7 @@ pipeline {
          }
         stage('Deploy') {
             steps {
-                sh 'mvn deploy -Dmaven.test.skip=true'
+                sh 'mvn install -Dmaven.test.skip=true'
             }
         }
         stage('Start Docker Compose') {
