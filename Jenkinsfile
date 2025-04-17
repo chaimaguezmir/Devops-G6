@@ -3,6 +3,10 @@ pipeline {
     tools {
         maven 'M2_HOME'
     }
+     environment {
+        DOCKER_IMAGE = "ahmedgharbi/gestion-station-ski:1.0.0"
+    }
+
 
     stages {
         stage('Hello Test') {
@@ -44,5 +48,23 @@ pipeline {
                 sh 'mvn deploy -Dmaven.test.skip=true'
             }
         }
+        stage('Start Docker Compose') {
+            steps {
+                script {
+                    sh 'docker pull $DOCKER_IMAGE'
+                    sh 'docker compose down || true' // Arrête l'ancienne version si elle tourne
+                    sh 'docker compose up -d'       // Lance la nouvelle version
+                }
+            }
+        }
+
+        stage('Check Running Containers') {
+            steps {
+                script {
+                    sh 'docker ps'
+                }
+            }
+        }
     }
 }
+
