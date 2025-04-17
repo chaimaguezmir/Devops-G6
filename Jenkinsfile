@@ -69,24 +69,25 @@ pipeline {
         }
 
         stage('📤 Deploy to Nexus') {
-            steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: 'localhost:8081',
-                    groupId: 'tn.esprit.spring',
-                    version: '1.2.2-SNAPSHOT',
-                    repository: 'maven-snapshots',
-                    credentialsId: 'deploymentRepo',
-                    artifacts: [
-                        [artifactId: 'gestion-station-ski',
-                         classifier: '',
-                         file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar',
-                         type: 'jar']
-                    ]
-                )
-            }
-        }
+        steps {
+               nexusArtifactUploader(
+            nexusVersion: 'nexus3',
+            protocol: 'http',
+            nexusUrl: 'localhost:8081',
+            groupId: 'tn.esprit.spring',
+            version: '1.2.2-SNAPSHOT',  // Ensure version matches the generated file
+            repository: 'maven-snapshots',
+            credentialsId: 'deploymentRepo',
+            artifacts: [
+                [artifactId: 'gestion-station-ski',
+                 classifier: '',
+                 file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar',  // Correct file name
+                 type: 'jar']
+            ]
+        )
+    }
+}
+
 
         stage('🐳 Docker Compose Deploy') {
             steps {
