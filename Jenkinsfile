@@ -65,6 +65,17 @@ pipeline {
                 }
             }
         }
+        stage('Vérification Prometheus') {
+            steps {
+                script {
+                    echo 'Vérification de l\'exposition des métriques de Jenkins'
+                    sh 'curl -s http://192.168.122.2:8080/prometheus || echo "Erreur: Jenkins ne fournit pas les métriques"'
+                    echo 'Vérification que Prometheus récupère les métriques'
+                    sh 'curl -s http://localhost:9090/api/v1/targets | jq .'
+                }
+            }
+        }
+      }
     }
-}
+
 
