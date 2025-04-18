@@ -5,10 +5,13 @@ services:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=stationSki
     ports:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
+      # Optionnel : script d'init
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
