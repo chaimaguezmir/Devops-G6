@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'Instructor',
+                git branch: 'AnasBettouzia-4Twin5-G6',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git',
                     credentialsId: 'git-token'
             }
