@@ -18,7 +18,7 @@ pipeline {
 
         stage('Git Checkout') {
             steps {
-                git branch: 'RegitrationEntity',
+                git branch: 'ChaimaGuezmir-4Twin5-Groupe6',
                     url: 'https://github.com/chaimaguezmir/Devops-G6.git',
                     credentialsId: 'jenkins-github-token'
             }
