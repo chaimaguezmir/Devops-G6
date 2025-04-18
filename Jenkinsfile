@@ -135,8 +135,8 @@ pipeline {
             emailext(
                 subject: "✅ Succès Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
                 body: "Le pipeline a été exécuté avec succès.\nDétails : ${env.BUILD_URL}",
-                to: 'abettouzia@gmail.com',
-                from: 'Jenkins CI/CD <abettouzia@gmail.com>'
+                to: 'ahlemt777@gmail.com',
+                from: 'Jenkins CI/CD <ahlemt777@gmail.com>'
             )
         }
 
@@ -146,8 +146,8 @@ pipeline {
             emailext(
                 subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
                 body: "Le pipeline a échoué.\nConsultez les logs ici : ${env.BUILD_URL}",
-                to: 'abettouzia@gmail.com',
-                from: 'Jenkins CI/CD <abettouzia@gmail.com>'
+                to: 'ahlemt777@gmail.com',
+                from: 'Jenkins CI/CD <ahlemt777@gmail.com>'
             )
         }
     }
