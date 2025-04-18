@@ -53,14 +53,14 @@ pipeline {
             }
         }
         stage('Start Docker Compose') {
-        steps {
-            script {
-                sh 'docker pull $DOCKER_IMAGE'
-                sh 'docker compose down -v --remove-orphans || true'
-                sh 'docker compose up -d'
+            steps {
+                script {
+                    sh 'docker pull $DOCKER_IMAGE'
+                    sh 'docker compose down || true' // Arrête l'ancienne version si elle tourne
+                    sh 'docker compose up -d'       // Lance la nouvelle version
+                }
             }
         }
-    }
 
         stage('Check Running Containers') {
             steps {
