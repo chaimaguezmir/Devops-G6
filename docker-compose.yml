@@ -3,8 +3,11 @@ version: "3.8"
 services:
   mysqldb:
     image: mysql:5.7
+    restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=stationSki
     ports:
       - 3306:3306
     volumes:
@@ -13,20 +16,25 @@ services:
   app-station-ski:
     depends_on:
       - mysqldb
-    image: mahdikalfat/gestion-station-ski:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: on-failure
     ports:
       - 8089:8089
     environment:
       SPRING_APPLICATION_JSON: '{
+        "server.servlet.context-path" : "/api",
+        "server.port" : "8089",
         "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true",
         "spring.datasource.username" : "root",
-        "spring.datasource.password" : "admin",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
-        "spring.jpa.hibernate.ddl-auto" : "create"
+        "spring.datasource.password" : "",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+        "spring.jpa.hibernate.ddl-auto" : "update"
       }'
     stdin_open: true
     tty: true
+
 
 volumes:
   db:
