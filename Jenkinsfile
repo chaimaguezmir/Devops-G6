@@ -52,12 +52,19 @@ pipeline {
                 sh 'mvn install -Dmaven.test.skip=true'
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t $DOCKER_IMAGE ."
+                }
+            }
+        }
+
         stage('Start Docker Compose') {
             steps {
                 script {
-                    sh 'docker pull $DOCKER_IMAGE'
-                    sh 'docker compose down || true' // Arrête l'ancienne version si elle tourne
-                    sh 'docker compose up -d'       // Lance la nouvelle version
+                    sh 'docker compose down || true' // Stop previous version if running
+                    sh 'docker compose up -d'       // Start new version
                 }
             }
         }
