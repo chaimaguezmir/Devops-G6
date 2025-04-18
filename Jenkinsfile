@@ -11,7 +11,7 @@ pipeline {
         DOCKER_IMAGE = "ahlemtrabelsi/${ARTIFACT}:1.0.0"
         SONAR_HOST_URL = 'http://localhost:9000'
         SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6'
-        MYSQL_PORT = '3307'
+        MYSQL_PORT = '3306'
     }
 
     stages {
