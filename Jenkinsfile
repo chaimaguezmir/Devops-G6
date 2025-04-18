@@ -11,6 +11,7 @@ pipeline {
         DOCKER_IMAGE = "ahlemtrabelsi/${ARTIFACT}:1.0.0"
         SONAR_HOST_URL = 'http://localhost:9000'
         SONAR_LOGIN = 'squ_be5192562c66cb09687b3d1bfc987596789924b6'
+        MYSQL_PORT = '3307'
     }
 
     stages {
@@ -69,30 +70,39 @@ pipeline {
         }
 
         stage('📤 Deploy to Nexus') {
-        steps {
-               nexusArtifactUploader(
-            nexusVersion: 'nexus3',
-            protocol: 'http',
-            nexusUrl: 'localhost:8081',
-            groupId: 'tn.esprit.spring',
-            version: '1.2.2-SNAPSHOT',  // Ensure version matches the generated file
-            repository: 'maven-snapshots',
-            credentialsId: 'deploymentRepo',
-            artifacts: [
-                [artifactId: 'gestion-station-ski',
-                 classifier: '',
-                 file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar',  // Correct file name
-                 type: 'jar']
-            ]
-        )
-    }
-}
-
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'localhost:8081',
+                    groupId: 'tn.esprit.spring',
+                    version: '1.2.2-SNAPSHOT',
+                    repository: 'maven-snapshots',
+                    credentialsId: 'deploymentRepo',
+                    artifacts: [[
+                        artifactId: 'gestion-station-ski',
+                        classifier: '',
+                        file: 'target/gestion-station-ski-1.2.2-SNAPSHOT.jar',
+                        type: 'jar'
+                    ]]
+                )
+            }
+        }
 
         stage('🐳 Docker Compose Deploy') {
             steps {
                 script {
                     sh 'docker pull $DOCKER_IMAGE || true'
+
+                    // Vérification du port avant lancement
+                    sh """
+                        if lsof -i :${MYSQL_PORT}; then
+                            echo "❌ Le port ${MYSQL_PORT} est déjà utilisé. Abandon du déploiement Docker.";
+                            exit 1;
+                        fi
+                    """
+
+                    // Lancement de Docker Compose
                     sh 'docker compose down || true'
                     sh 'docker compose up -d'
                 }
@@ -114,20 +124,14 @@ pipeline {
     }
 
     post {
-        success {
-            archiveArtifacts artifacts: "target/*.jar", fingerprint: true
-            echo '✅ Pipeline terminé avec succès.'
-        }
-        failure {
-            echo '❌ Le pipeline a échoué.'
-        }
-    }
-
-    post {
         always {
             echo 'Pipeline terminé.'
         }
+
         success {
+            archiveArtifacts artifacts: "target/*.jar", fingerprint: true
+            echo '✅ Pipeline terminé avec succès.'
+
             emailext(
                 subject: "✅ Succès Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
                 body: "Le pipeline a été exécuté avec succès.\nDétails : ${env.BUILD_URL}",
@@ -135,7 +139,10 @@ pipeline {
                 from: 'Jenkins CI/CD <abettouzia@gmail.com>'
             )
         }
+
         failure {
+            echo '❌ Le pipeline a échoué.'
+
             emailext(
                 subject: "❌ Échec Pipeline : ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
                 body: "Le pipeline a échoué.\nConsultez les logs ici : ${env.BUILD_URL}",
@@ -143,4 +150,5 @@ pipeline {
                 from: 'Jenkins CI/CD <abettouzia@gmail.com>'
             )
         }
+    }
 }
