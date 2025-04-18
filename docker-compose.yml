@@ -10,7 +10,7 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-      # Optionnel : script d'init
+      # Pour initialiser la base manuellement avec un script SQL, décommente la ligne ci-dessous :
       # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -32,11 +32,12 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
+      - SPRING_JPA_SHOW_SQL=true
       - SERVER_PORT=8089
       - SERVER_SERVLET_CONTEXT_PATH=/api
       - MANAGEMENT_ENDPOINT_WEB_EXPOSURE_INCLUDE=*
     stdin_open: true
     tty: true
-    
+
 volumes:
   db:
