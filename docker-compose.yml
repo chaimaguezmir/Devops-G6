@@ -3,12 +3,8 @@ version: "3.8"
 services:
   mysqldb:
     image: mysql:5.7
-    restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword # Add a real password
-      - MYSQL_DATABASE=stationSki
-      - MYSQL_USER=skiuser
-      - MYSQL_PASSWORD=skipassword
+      - MYSQL_ROOT_PASSWORD=admin
     ports:
       - 3306:3306
     volumes:
@@ -30,7 +26,7 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/stationSki?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
       - SERVER_PORT=8089
