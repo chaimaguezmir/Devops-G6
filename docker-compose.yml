@@ -5,37 +5,26 @@ services:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=admin
-      - MYSQL_DATABASE=stationSki
     ports:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-      # Pour initialiser la base manuellement avec un script SQL, décommente la ligne ci-dessous :
-      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      interval: 10s
-      retries: 10
 
   app-station-ski:
     depends_on:
-      mysqldb:
-        condition: service_healthy
+      - mysqldb
     image: mahdikalfat/gestion-station-ski:1.0.0
     restart: on-failure
     ports:
       - 8089:8089
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/stationSki?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
-      - SPRING_JPA_SHOW_SQL=true
-      - SERVER_PORT=8089
-      - SERVER_SERVLET_CONTEXT_PATH=/api
-      - MANAGEMENT_ENDPOINT_WEB_EXPOSURE_INCLUDE=*
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true",
+        "spring.datasource.username" : "root",
+        "spring.datasource.password" : "admin",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
+        "spring.jpa.hibernate.ddl-auto" : "create"
+      }'
     stdin_open: true
     tty: true
 
